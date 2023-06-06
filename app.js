@@ -1,4 +1,5 @@
 import { createQuestion } from "./util/question.js";
+import { saveContact } from "./util/save.js";
 
 const nama = await createQuestion("name", "masukkan nama anda");
 const telephone = await createQuestion(
@@ -7,4 +8,9 @@ const telephone = await createQuestion(
 );
 const email = await createQuestion("email", "masukkan email anda");
 
-console.table({ nama, telephone, email });
+const contact = {
+  nama,
+  telephone,
+  email,
+};
+saveContact(contact);
