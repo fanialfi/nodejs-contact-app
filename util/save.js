@@ -4,7 +4,7 @@ import { resolve } from "path";
 if (!fs.existsSync("data")) {
   fs.mkdirSync("data");
 }
-const pathJson = resolve("./", "data/contacts.json");
+const pathJson = resolve("./", "data/data.json");
 
 async function saveContact(contact) {
   let contacts = [];
