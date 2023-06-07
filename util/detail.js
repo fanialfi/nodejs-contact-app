@@ -9,7 +9,11 @@ async function detailContact(name) {
       return contact;
     }
   });
-  return detail[0];
+  if (detail[0] != undefined) {
+    return detail[0];
+  } else {
+    return "contact tidak di temukan";
+  }
 }
 
 export default detailContact;
