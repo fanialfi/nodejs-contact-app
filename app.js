@@ -37,7 +37,7 @@ program
     "insert all information to database, name, telephone, email"
   )
   .option("-s, --simple", "insert name and telephone information to database")
-  .action(async (options) => {
+  .action(async function (options) {
     if (options.simple) {
       const nama = await createQuestion("name", "masukkan nama anda");
       const telephone = await createQuestion(
@@ -54,33 +54,33 @@ program
       const email = await createQuestion("email", "masukkan email anda");
       saveContact({ nama, telephone, email });
     } else {
-      console.log("option required");
+      this.help();
     }
   });
 
 program
   .command("detail")
   .description("see detail contact")
-  .option("-c, --contact <string>", "contact for viewing")
-  .action(async (options) => {
+  .requiredOption("-c, --contact <string>", "contact for viewing")
+  .action(async function (options) {
     if (options.contact) {
       const detail = await detailContact(options.contact.trim());
       console.table(detail);
     } else {
-      console.log("option required");
+      this.help();
     }
   });
 
 program
   .command("delete")
   .description("delete contact in database")
-  .option("-c, --contact <string>", "contact to delete")
-  .action(async (options) => {
+  .requiredOption("-c, --contact <string>", "contact to delete")
+  .action(async function (options) {
     if (options.contact) {
       const del = await deleteContact(options.contact.trim());
       console.log(del);
     } else {
-      console.log("option required");
+      this.help();
     }
   });
 program.parse();
