@@ -12,9 +12,13 @@ async function saveContact(contact) {
     contacts = JSON.parse(await fs.promises.readFile(pathJson));
   }
 
-  contacts.push(contact);
-
-  await fs.promises.writeFile(pathJson, JSON.stringify(contacts));
+  try {
+    contacts.push(contact);
+    await fs.promises.writeFile(pathJson, JSON.stringify(contacts));
+    console.log("sucess add contact to database");
+  } catch (error) {
+    console.log("error add contact to database");
+  }
 }
 
 export { saveContact };
