@@ -1,24 +1,14 @@
-import fs from "fs";
-import { resolve } from "path";
+import pgConnection from "./pg.js";
+import chalk from "chalk";
 
-if (!fs.existsSync("data")) {
-  fs.mkdirSync("data");
-}
-const pathJson = resolve("./", "data/data.json");
-
-async function saveContact(contact) {
-  let contacts = [];
-  if (fs.existsSync(pathJson)) {
-    contacts = JSON.parse(await fs.promises.readFile(pathJson));
-  }
-
+export default async function saveContact(contact) {
   try {
-    contacts.push(contact);
-    await fs.promises.writeFile(pathJson, JSON.stringify(contacts));
-    console.log("sucess add contact to database");
+    const query =
+      "INSERT INTO contacts(nama, telephone, email) VALUES ($1, $2, $3)";
+    await pgConnection(query, contact);
+    console.log(chalk.green.bold("Sukses menambahkan kontak ke database"));
+    return;
   } catch (error) {
-    console.log("error add contact to database");
+    console.log(chalk.red.bold(error));
   }
 }
-
-export { saveContact };

@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 
-import { createQuestion } from "./util/question.js";
-import { saveContact } from "./util/save.js";
+import createQuestion from "./util/question.js";
+import saveContact from "./util/save.js";
 import listContact from "./util/list.js";
-import process from "process";
 import detailContact from "./util/detail.js";
 import deleteContact from "./util/remove.js";
 import { Command } from "commander";
@@ -20,13 +19,7 @@ program
   .description("list all contact in database")
   .action(async () => {
     const buffers = await listContact();
-    const contacts = JSON.parse(buffers.toString());
-
-    const listNama = contacts.map((contact) => {
-      return contact.nama;
-    });
-
-    console.table(listNama);
+    console.table(buffers);
   });
 
 program
@@ -44,7 +37,7 @@ program
         "telephone",
         "masukkan nomor telephone anda"
       );
-      saveContact({ nama, telephone });
+      saveContact([nama, telephone, "-"]);
     } else if (options.all) {
       const nama = await createQuestion("name", "masukkan nama anda");
       const telephone = await createQuestion(
@@ -52,7 +45,7 @@ program
         "masukkan nomor telephone anda"
       );
       const email = await createQuestion("email", "masukkan email anda");
-      saveContact({ nama, telephone, email });
+      saveContact([nama, telephone, email]);
     } else {
       this.help();
     }

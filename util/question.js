@@ -7,7 +7,7 @@ const options = {
   output: process.stdout,
 };
 
-async function createQuestion(type, question) {
+export default async function createQuestion(type, question) {
   const input = readline.createInterface(options);
   let data;
   const questionValid = `${question} : `;
@@ -48,5 +48,3 @@ async function createQuestion(type, question) {
   input.close();
   return data.trim();
 }
-
-export { createQuestion };

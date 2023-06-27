@@ -1,19 +1,15 @@
-import listContact from "./list.js";
+import pgConnection from "./pg.js";
+import chalk from "chalk";
 
-async function detailContact(name) {
-  const buffers = await listContact();
-  const contacts = JSON.parse(buffers.toString());
+export default async function detailContact(name) {
+  const query = `SELECT nama, telephone, email FROM contacts WHERE nama = $1`;
+  const resolve = await pgConnection(query, [name]);
 
-  const detail = contacts.filter((contact) => {
-    if (contact.nama == name) {
-      return contact;
-    }
-  });
-  if (detail[0] != undefined) {
-    return detail[0];
+  if (resolve.rows.length < 1) {
+    return `${chalk.green.bold("kontak dengan nama : ")} ${chalk.red.bold(
+      name
+    )} ${chalk.green.bold("tidak tersedia didalam database")}`;
   } else {
-    return "contact tidak di temukan";
+    return resolve.rows;
   }
 }
-
-export default detailContact;

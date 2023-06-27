@@ -1,21 +1,13 @@
-import fs from "fs";
-import { resolve } from "path";
+import pgConnection from "./pg.js";
+import chalk from "chalk";
 
-// cek apakah ada folder data atau tidak
-if (!fs.existsSync("data")) {
-  fs.mkdirSync("data");
+export default async function listContact() {
+  const query = "SELECT nama, telephone, email FROM contacts";
+  const resolve = await pgConnection(query);
+
+  if (resolve.rows.length < 1) {
+    return chalk.red.bold("tidak ada kontak yang tersedia di database");
+  } else {
+    return resolve.rows;
+  }
 }
-
-const pathJson = resolve("./", "data/data.json");
-
-async function listContact() {
-  return new Promise((resolve, reject) => {
-    try {
-      resolve(fs.promises.readFile(pathJson));
-    } catch (error) {
-      reject(error);
-    }
-  });
-}
-
-export default listContact;
